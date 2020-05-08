@@ -3,13 +3,13 @@ from nonterminals import NonTerminals
 from production import Production
 
 """
-The grammar:
+Calculator grammar:
     goal -> expr eof
     expr -> expr + term | expr - term | term
     term -> term * factor | term / factor | factor
     factor -> literal | ( expr )
 """
-GRAMMAR = (
+DEFAULT_GRAMMAR = (
     Production(NonTerminals.GOAL, NonTerminals.EXPR, Terminals.EOF),
     Production(NonTerminals.EXPR, NonTerminals.EXPR, Terminals.PLUS, NonTerminals.TERM),
     Production(
