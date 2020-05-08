@@ -163,6 +163,7 @@ class EarleyParser:
         S = self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
         tokens = self.tokens
         top_level = self.grammar[0]
+        S = self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
         S[0].add(top_level)
 
         for k in range(len(tokens) + 1):
