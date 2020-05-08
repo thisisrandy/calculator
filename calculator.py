@@ -19,17 +19,6 @@ class Token:
         return f"{self.type} {self.value}"
 
 
-class Terminals(Enum):
-    PLUS = auto()
-    MINUS = auto()
-    MULT = auto()
-    DIV = auto()
-    RPAREN = auto()
-    LPAREN = auto()
-    LITERAL = auto()
-    EOF = auto()
-
-
 def lex(expression):
     accum = ""
     for char in expression:
@@ -59,13 +48,6 @@ def lex(expression):
 
 
 # %%
-class NonTerminals(Enum):
-    GOAL = auto()
-    EXPR = auto()
-    TERM = auto()
-    FACTOR = auto()
-
-
 class Production:
     def __init__(self, name, *expansion, pos=0, origin=0):
         self.name = name
