@@ -163,7 +163,6 @@ class EarleyParser:
         self.grammar = grammar
 
     def parse(self):
-        S = self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
         tokens = self.tokens
         top_level = self.grammar[0]
         S = self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
