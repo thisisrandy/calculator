@@ -158,13 +158,13 @@ class EarleyParser:
         if len(grammar) == 0:
             raise Exception("grammar must contain at least one production")
         self.grammar = grammar
-        self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
 
     def parse(self):
-        S = self.S
+        S = self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
         tokens = self.tokens
         top_level = self.grammar[0]
         S[0].add(top_level)
+
         for k in range(len(tokens) + 1):
             while S[k].hasNext():
                 state = S[k].next()
