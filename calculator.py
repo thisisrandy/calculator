@@ -112,7 +112,9 @@ class Production:
 
     def advance(self):
         """ create a copy of self with position advanced by one """
-        return Production(self.name, *self.expansion, pos=self.pos + 1)
+        return Production(
+            self.name, *self.expansion, pos=self.pos + 1, origin=self.origin
+        )
 
     def isComplete(self):
         return self.pos == len(self.expansion)
