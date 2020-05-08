@@ -162,8 +162,10 @@ class EarleyParser:
 
     def parse(self):
         S = self.S
-        S[0].add(self.grammar[0])
-        for k in range(len(self.tokens) + 1):
+        tokens = self.tokens
+        top_level = self.grammar[0]
+        S[0].add(top_level)
+        for k in range(len(tokens) + 1):
             while S[k].hasNext():
                 state = S[k].next()
                 if not state.isComplete():
@@ -173,6 +175,8 @@ class EarleyParser:
                         self._scanner(state, k)
                 else:
                     self._completer(state, k)
+
+        return top_level in S[len(tokens)]
 
     def _predictor(self, state, k):
         for rule in filter(lambda r: r.nameMatches(state.next()), self.grammar):
@@ -192,7 +196,7 @@ class EarleyParser:
 # %%
 tokens = list(lex("1+2*3/4"))
 parser = EarleyParser(tokens)
-parser.parse()
+print(parser.parse())
 
 # %%
 class AST:
