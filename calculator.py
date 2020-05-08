@@ -3,6 +3,7 @@ from enum import Enum, auto
 import re
 from orderedset import OrderedSet
 from terminals import Terminals
+from nonterminals import NonTerminals
 
 # %%
 class Token:
