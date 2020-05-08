@@ -86,7 +86,7 @@ class Production:
         )
 
     def __hash__(self):
-        return hash((self.name, self.expansion))
+        return hash((self.name, self.expansion, self.pos, self.origin))
 
     def __repr__(self):
         return f"Name: {self.name}\nExpansion: {self.expansion}\nPosition: {self.pos} Origin: {self.origin}"
@@ -116,6 +116,15 @@ class Production:
 
     def isComplete(self):
         return self.pos == len(self.expansion)
+
+    def asComplete(self):
+        """
+        create a copy with position at end. useful for checking if top
+        level was in end state
+        """
+        return Production(
+            self.name, *self.expansion, pos=len(self.expansion), origin=self.origin
+        )
 
 
 """
@@ -179,7 +188,7 @@ class EarleyParser:
                 else:
                     self._completer(state, k)
 
-        return top_level in S[len(tokens)]
+        return top_level.asComplete() in S[len(tokens)]
 
     def _predictor(self, state, k):
         for rule in filter(lambda r: r.nameMatches(state.next()), self.grammar):
