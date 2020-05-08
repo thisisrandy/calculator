@@ -198,7 +198,6 @@ class EarleyParser:
 
     def _scanner(self, state, k):
         if state.nextMatches(self.tokens[k]):
-            # TODO: can't this overflow?
             self.S[k + 1].add(state.advance())
 
     def _completer(self, state, k):
