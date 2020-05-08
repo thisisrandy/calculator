@@ -1,7 +1,7 @@
 # %%
 from enum import Enum, auto
 import re
-from OrderedSet import OrderedSet
+from orderedset import OrderedSet
 
 # %%
 class Token:
