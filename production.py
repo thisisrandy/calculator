@@ -113,5 +113,5 @@ class Production:
     def evaluate(self):
         children = self.children
         if not all(children):
-            raise Exception("Cannot evaluate until all full parse is available")
+            raise Exception("Cannot evaluate until a full parse is available")
         return self.eval_fn(children)
