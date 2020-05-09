@@ -23,7 +23,12 @@ def lex(expression):
     """
     accum = ""
     for char in expression:
-        if re.match("[\d.e]", char) or len(accum) and accum[-1] == "e" and char == "-":
+        if (
+            re.match("[\d.e]", char)
+            or len(accum)
+            and accum[-1] == "e"
+            and re.match("[+-]", char)
+        ):
             accum += char
         else:
             if len(accum) > 0:
