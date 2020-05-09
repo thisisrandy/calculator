@@ -1,5 +1,6 @@
 import re
 from terminals import Terminals
+from parseerror import ParseError
 
 
 class Token:
@@ -13,14 +14,6 @@ class Token:
 
     def __repr__(self):
         return f"{self.type} {self.value}"
-
-
-class ParseError(Exception):
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __str__(self):
-        return self.msg
 
 
 def lex(expression):
