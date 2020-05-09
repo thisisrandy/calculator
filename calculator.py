@@ -1,10 +1,5 @@
 if __name__ == "__main__":
-    from enum import Enum, auto
-    import re
-    from terminals import Terminals
-    from nonterminals import NonTerminals
     from lexer import lex
-    from production import Production
     from earlyparser import EarleyParser
     from parseerror import ParseError
     import signal
