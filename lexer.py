@@ -42,7 +42,7 @@ def lex(expression):
                 }[char]
                 yield Token(type, char)
             except:
-                raise Exception(f"Invalid character {char} in expression {expression}")
+                raise ParseError(f"Invalid character {char} in expression {expression}")
     if len(accum) > 0:
         yield Token(Terminals.LITERAL, float(accum))
     yield Token(Terminals.EOF)
