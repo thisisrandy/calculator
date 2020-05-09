@@ -15,7 +15,18 @@ class Token:
         return f"{self.type} {self.value}"
 
 
+class ParseError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
+
+
 def lex(expression):
+    """
+    :raise ParseError on encountering invalid character
+    """
     accum = ""
     for char in expression:
         if re.match("\d", char):
