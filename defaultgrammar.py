@@ -53,6 +53,12 @@ DEFAULT_GRAMMAR = (
     Production(NonTerminals.FACTOR, Terminals.LITERAL, eval_fn=lambda c: c[0].value,),
     Production(
         NonTerminals.FACTOR,
+        Terminals.MINUS,
+        Terminals.LITERAL,
+        eval_fn=lambda c: -c[1].value,
+    ),
+    Production(
+        NonTerminals.FACTOR,
         Terminals.RPAREN,
         NonTerminals.EXPR,
         Terminals.LPAREN,
