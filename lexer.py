@@ -26,14 +26,15 @@ class ParseError(Exception):
 def lex(expression):
     """
     :raise ParseError on encountering invalid character
+    :raise ValueError on invalid float
     """
     accum = ""
     for char in expression:
-        if re.match("\d", char):
+        if re.match("[\d.e]", char) or len(accum) and accum[-1] == "e" and char == "-":
             accum += char
         else:
             if len(accum) > 0:
-                yield Token(Terminals.LITERAL, int(accum))
+                yield Token(Terminals.LITERAL, float(accum))
                 accum = ""
             if re.match("\s", char):
                 continue
@@ -50,5 +51,5 @@ def lex(expression):
             except:
                 raise Exception(f"Invalid character {char} in expression {expression}")
     if len(accum) > 0:
-        yield Token(Terminals.LITERAL, int(accum))
+        yield Token(Terminals.LITERAL, float(accum))
     yield Token(Terminals.EOF)
