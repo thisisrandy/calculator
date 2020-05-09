@@ -26,7 +26,10 @@ class Production:
         return hash((self.name, self.expansion, self.pos, self.origin))
 
     def __repr__(self):
-        return f"Name: {self.name}\nExpansion: {self.expansion}\nPosition: {self.pos} Origin: {self.origin}"
+        return (
+            f"Name: {self.name}\nExpansion: {self.expansion}\n"
+            f"Position: {self.pos} Origin: {self.origin}"
+        )
 
     def nameMatches(self, symbol):
         """ check if name (LHS) matches symbol """
