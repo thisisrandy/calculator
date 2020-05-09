@@ -13,11 +13,14 @@ class Production:
         self.origin = origin
 
     def __eq__(self, other):
-        """ equality on name if other is a string """
+        """
+        equality on name if other is a string, hash if Production, and false
+        otherwise
+        """
         return (
             self.name == other
             if isinstance(other, str)
-            else self.name == other.name and self.expansion == other.expansion
+            else hash(self) == hash(other)
             if isinstance(other, Production)
             else False
         )
