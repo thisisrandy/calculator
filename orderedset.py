@@ -51,10 +51,15 @@ class OrderedSet(collections.MutableSet):
             curr = curr[1]
 
     def pop(self, last=True):
+        key = self.peek(last=last)
+        self.discard(key)
+        return key
+
+    def peek(self, last=True):
+        """ like pop, but doesn't alter the set """
         if not self:
             raise KeyError("set is empty")
         key = self.end[1][0] if last else self.end[2][0]
-        self.discard(key)
         return key
 
     def __repr__(self):
