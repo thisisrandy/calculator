@@ -22,7 +22,7 @@ def lex(expression):
             accum += char
         else:
             if len(accum) > 0:
-                yield Token(Terminals.LITERAL, accum)
+                yield Token(Terminals.LITERAL, int(accum))
                 accum = ""
             if re.match("\s", char):
                 continue
@@ -39,5 +39,5 @@ def lex(expression):
             except:
                 raise Exception(f"Invalid character {char} in expression {expression}")
     if len(accum) > 0:
-        yield Token(Terminals.LITERAL, accum)
+        yield Token(Terminals.LITERAL, int(accum))
     yield Token(Terminals.EOF)
