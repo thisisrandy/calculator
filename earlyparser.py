@@ -19,6 +19,10 @@ class EarleyParser:
         self.grammar = grammar
 
     def parse(self):
+        """
+        return a Production object containing a successful parse or None on
+        failure. the returned object may be evaluated per its specified rules
+        """
         tokens = self.tokens
         top_level = self.grammar[0]
         S = self.S = [OrderedSet() for _ in range(len(tokens) + 1)]
@@ -35,17 +39,20 @@ class EarleyParser:
                 else:
                     self._completer(state, k)
 
-        return top_level.asComplete() in S[len(tokens)]
+        return (
+            S[len(tokens)].peek() if top_level.asComplete() in S[len(tokens)] else None
+        )
 
     def _predictor(self, state, k):
         for rule in filter(lambda r: r.nameMatches(state.next()), self.grammar):
             self.S[k].add(rule.copy(k))
 
     def _scanner(self, state, k):
-        if state.nextMatches(self.tokens[k]):
-            self.S[k + 1].add(state.advance())
+        tokens = self.tokens
+        if state.nextMatches(tokens[k]):
+            self.S[k + 1].add(state.advance(tokens[k]))
 
     def _completer(self, state, k):
         S = self.S
         for production in filter(lambda p: p.nextMatches(state.name), S[state.origin]):
-            S[k].add(production.advance())
+            S[k].add(production.advance(state))

@@ -10,21 +10,52 @@ Calculator grammar:
     factor -> literal | ( expr )
 """
 DEFAULT_GRAMMAR = (
-    Production(NonTerminals.GOAL, NonTerminals.EXPR, Terminals.EOF),
-    Production(NonTerminals.EXPR, NonTerminals.EXPR, Terminals.PLUS, NonTerminals.TERM),
     Production(
-        NonTerminals.EXPR, NonTerminals.EXPR, Terminals.MINUS, NonTerminals.TERM
-    ),
-    Production(NonTerminals.EXPR, NonTerminals.TERM),
-    Production(
-        NonTerminals.TERM, NonTerminals.TERM, Terminals.MULT, NonTerminals.FACTOR
+        NonTerminals.GOAL,
+        NonTerminals.EXPR,
+        Terminals.EOF,
+        eval_fn=lambda c: c[0].evaluate(),
     ),
     Production(
-        NonTerminals.TERM, NonTerminals.TERM, Terminals.DIV, NonTerminals.FACTOR
+        NonTerminals.EXPR,
+        NonTerminals.EXPR,
+        Terminals.PLUS,
+        NonTerminals.TERM,
+        eval_fn=lambda c: c[0].evaluate() + c[2].evaluate(),
     ),
-    Production(NonTerminals.TERM, NonTerminals.FACTOR),
-    Production(NonTerminals.FACTOR, Terminals.LITERAL),
     Production(
-        NonTerminals.FACTOR, Terminals.RPAREN, NonTerminals.EXPR, Terminals.LPAREN
+        NonTerminals.EXPR,
+        NonTerminals.EXPR,
+        Terminals.MINUS,
+        NonTerminals.TERM,
+        eval_fn=lambda c: c[0].evaluate() - c[2].evaluate(),
+    ),
+    Production(
+        NonTerminals.EXPR, NonTerminals.TERM, eval_fn=lambda c: c[0].evaluate(),
+    ),
+    Production(
+        NonTerminals.TERM,
+        NonTerminals.TERM,
+        Terminals.MULT,
+        NonTerminals.FACTOR,
+        eval_fn=lambda c: c[0].evaluate() * c[2].evaluate(),
+    ),
+    Production(
+        NonTerminals.TERM,
+        NonTerminals.TERM,
+        Terminals.DIV,
+        NonTerminals.FACTOR,
+        eval_fn=lambda c: c[0].evaluate() / c[2].evaluate(),
+    ),
+    Production(
+        NonTerminals.TERM, NonTerminals.FACTOR, eval_fn=lambda c: c[0].evaluate(),
+    ),
+    Production(NonTerminals.FACTOR, Terminals.LITERAL, eval_fn=lambda c: c[0].value,),
+    Production(
+        NonTerminals.FACTOR,
+        Terminals.RPAREN,
+        NonTerminals.EXPR,
+        Terminals.LPAREN,
+        eval_fn=lambda c: c[1].evaluate(),
     ),
 )

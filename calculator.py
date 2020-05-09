@@ -8,9 +8,11 @@ from production import Production
 from earlyparser import EarleyParser
 
 # %%
-tokens = list(lex("1+2*3/4"))
+tokens = list(lex("1+2*(3/4-1)"))
 parser = EarleyParser(tokens)
-print(parser.parse())
+res = parser.parse()
+if res:
+    print(res.evaluate())
 
 # %%
 class AST:

@@ -2,7 +2,27 @@ from terminals import Terminals
 
 
 class Production:
-    def __init__(self, name, *expansion, pos=0, origin=0):
+    def __init__(
+        self,
+        name,
+        *expansion,
+        pos=0,
+        origin=0,
+        children=None,
+        eval_fn=lambda children: None,
+    ):
+        """
+        :param name: the LHS of the production, a NonTerminal
+        :param expansion: the RHS of the production, a sequence of Terminals
+        and NonTerminals
+        :param int pos: the current position
+        :param int origin: the token position at which matching began
+        :param children: a sequence of matched NonTerminals and Tokens
+        (should not be manually specified)
+        :param eval_fn: a function with param children which specifies the
+        semantics of the production. must be specified in order for evaluate
+        to work properly
+        """
         self.name = name
         if len(expansion) < pos:
             raise Exception(
@@ -11,6 +31,8 @@ class Production:
         self.expansion = expansion
         self.pos = pos
         self.origin = origin
+        self.children = children if children else [None] * len(expansion)
+        self.eval_fn = eval_fn
 
     def __eq__(self, other):
         """
@@ -50,13 +72,30 @@ class Production:
         return isinstance(self.expansion[self.pos], Terminals)
 
     def copy(self, origin):
-        """ create a copy with pos 0 and specified origin """
-        return Production(self.name, *self.expansion, pos=0, origin=origin)
-
-    def advance(self):
-        """ create a copy of self with position advanced by one """
+        """
+        create a copy with pos 0 and specified origin. children are NOT
+        copied
+        """
         return Production(
-            self.name, *self.expansion, pos=self.pos + 1, origin=self.origin
+            self.name, *self.expansion, pos=0, origin=origin, eval_fn=self.eval_fn
+        )
+
+    def advance(self, matched_child):
+        """
+        create a copy of self with position advanced by one. in the copy,
+        add matched_child to the children array
+        """
+        children = [
+            matched_child if idx == self.pos else item
+            for idx, item in enumerate(self.children)
+        ]
+        return Production(
+            self.name,
+            *self.expansion,
+            pos=self.pos + 1,
+            origin=self.origin,
+            children=children,
+            eval_fn=self.eval_fn,
         )
 
     def isComplete(self):
@@ -70,3 +109,9 @@ class Production:
         return Production(
             self.name, *self.expansion, pos=len(self.expansion), origin=self.origin
         )
+
+    def evaluate(self):
+        children = self.children
+        if not all(children):
+            raise Exception("Cannot evaluate until all full parse is available")
+        return self.eval_fn(children)
